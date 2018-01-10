@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -16,13 +17,13 @@ import java.util.ResourceBundle;
 public class TableDialog implements Initializable{
 
     public TableView<Item> itemsTable;
+
     public TableColumn idColumn;
     public TableColumn productNameColumn;
-    public TableColumn businessColumn;
     public TableColumn categoryColumn;
-    public TableColumn startDateColumn;
     public TableColumn costColumn;
-    public TableColumn endDateColumn;
+    public TableColumn descColumn;
+    public TableColumn packIDColumn;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -30,19 +31,16 @@ public class TableDialog implements Initializable{
 
         idColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("id"));
         productNameColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("productName"));
-        businessColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("businessType"));
         categoryColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("category"));
         costColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("cost"));
-        startDateColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("startDate"));
-        endDateColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("endDate"));
+        descColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("description"));
+        packIDColumn.setCellValueFactory(new PropertyValueFactory<Item,String>("packID"));
 
         ObservableList<Item> data = FXCollections.observableArrayList();
 
         for (String[] row : tableModel){
             data.add(new Item(row));
         }
-
-
 
         itemsTable.setItems(data);
 
@@ -57,29 +55,27 @@ public class TableDialog implements Initializable{
         private final SimpleStringProperty id;
         private final SimpleStringProperty productName;
         private final SimpleStringProperty category;
-        private final SimpleStringProperty businessType;
         private final SimpleStringProperty cost;
-        private final SimpleStringProperty startDate;
-        private final SimpleStringProperty endDate;
+        private final SimpleStringProperty description;
+        private final SimpleStringProperty packID;
 
-        private Item(String id, String productName, String category, String businessType, double cost, String startDate, String endDate){
+        private Item(String id, String productName, String category, double cost, String desc, String packID){
             this.id= new SimpleStringProperty(id);
             this.productName = new SimpleStringProperty(productName);
             this.category = new SimpleStringProperty(category);
-            this.businessType = new SimpleStringProperty(businessType);
             this.cost = new SimpleStringProperty(String.valueOf(cost));
-            this.startDate = new SimpleStringProperty(startDate);
-            this.endDate = new SimpleStringProperty(endDate);
+            this.description = new SimpleStringProperty(desc);
+            this.packID = new SimpleStringProperty(packID);
+
         }
 
         private Item(String[] data){
             this.id= new SimpleStringProperty(data[0]);
             this.productName = new SimpleStringProperty(data[1]);
             this.category = new SimpleStringProperty(data[2]);
-            this.businessType = new SimpleStringProperty(data[3]);
-            this.cost = new SimpleStringProperty(String.valueOf(data[4]));
-            this.startDate = new SimpleStringProperty(data[5]);
-            this.endDate = new SimpleStringProperty(data[6]);
+            this.cost = new SimpleStringProperty(String.valueOf(data[3]));
+            this.description = new SimpleStringProperty(data[4]);
+            this.packID = new SimpleStringProperty(data[5]);
         }
 
         public String getId() {
@@ -118,17 +114,6 @@ public class TableDialog implements Initializable{
             this.category.set(category);
         }
 
-        public String getBusinessType() {
-            return businessType.get();
-        }
-
-        public SimpleStringProperty businessTypeProperty() {
-            return businessType;
-        }
-
-        public void setBusinessType(String businessType) {
-            this.businessType.set(businessType);
-        }
 
         public String getCost() {
             return cost.get();
@@ -142,28 +127,28 @@ public class TableDialog implements Initializable{
             this.cost.set(cost);
         }
 
-        public String getStartDate() {
-            return startDate.get();
+        public String getDescription() {
+            return description.get();
         }
 
-        public SimpleStringProperty startDateProperty() {
-            return startDate;
+        public SimpleStringProperty descriptionProperty() {
+            return description;
         }
 
-        public void setStartDate(String startDate) {
-            this.startDate.set(startDate);
+        public void setDescription(String description) {
+            this.description.set(description);
         }
 
-        public String getEndDate() {
-            return endDate.get();
+        public String getPackID() {
+            return packID.get();
         }
 
-        public SimpleStringProperty endDateProperty() {
-            return endDate;
+        public SimpleStringProperty packIDProperty() {
+            return packID;
         }
 
-        public void setEndDate(String endDate) {
-            this.endDate.set(endDate);
+        public void setPackID(String packID) {
+            this.packID.set(packID);
         }
     }
 

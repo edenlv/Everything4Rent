@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
    <bottom>
       <VBox prefHeight="250.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -29,12 +29,20 @@
                   </Button>
                </children>
             </HBox>
-            <HBox fx:id="hbox_prod1" alignment="CENTER" prefHeight="100.0" prefWidth="400.0" visible="false">
+            <HBox fx:id="hbox_prod1" alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
                <children>
                   <Button fx:id="home_loginBtn" mnemonicParsing="false" onAction="#onPressUpdateProduct" prefWidth="180.0" text="Update Product" textAlignment="CENTER">
                      <font>
                         <Font size="18.0" />
                      </font>
+                  </Button>
+                  <Button fx:id="home_loginBtn1" layoutX="220.0" layoutY="32.0" mnemonicParsing="false" onAction="#onPressSearchProduct" prefWidth="180.0" text="Search Product" textAlignment="CENTER">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>

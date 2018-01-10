@@ -27,6 +27,7 @@ public class Home {
     public Stage addProductStage;
     public Stage tableDialogStage;
     public Stage updateProductStage;
+    public Stage searchProductStage;
 
 
     public void openLoginDialog(ActionEvent event){
@@ -120,7 +121,7 @@ public class Home {
         updateProductStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
         FXMLLoader fxmlLoader = new FXMLLoader();
         int width=600, height=550;
-        URL url = getClass().getResource("/View/UpdateProduct.fxml");;
+        URL url = getClass().getResource("/View/UpdateProduct.fxml");
         updateProductStage.setTitle("Update your product");
 
         try {
@@ -143,6 +144,30 @@ public class Home {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) openUpdateProduct(result.get());
+    }
+
+    public void onPressSearchProduct(ActionEvent actionEvent){
+        openSearchProduct();
+    }
+
+    public void openSearchProduct(){
+        searchProductStage = new Stage();
+        searchProductStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        int width=600, height=550;
+        URL url = getClass().getResource("/View/SearchProduct.fxml");
+        searchProductStage.setTitle("Search for a product");
+
+        try {
+            Parent root = fxmlLoader.load(url.openStream());
+            Scene scene = new Scene(root, width, height);
+            searchProductStage.setScene(scene);
+
+            Main.searchProductController = fxmlLoader.getController();
+
+            searchProductStage.show();
+        }
+        catch(Exception e) {e.printStackTrace();}
     }
 
 
