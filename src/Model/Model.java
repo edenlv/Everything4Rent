@@ -1,13 +1,15 @@
 package Model;
 
-import javafx.scene.control.Alert;
+        import javafx.scene.control.Alert;
+        import sun.security.krb5.internal.crypto.Des;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Properties;
+        import javax.mail.*;
+        import javax.mail.internet.InternetAddress;
+        import javax.mail.internet.MimeMessage;
+        import java.sql.*;
+        import java.util.ArrayList;
+        import java.util.Locale;
+        import java.util.Properties;
 
 public class Model {
     public static String path = System.getProperty("user.dir");
@@ -108,24 +110,21 @@ public class Model {
 
     }
 
-    /**
-     * Insert a new row into the warehouses table
-     *
-     */
+
+    //------------ PRODUCT---------------------
+
 
     // insert to product
-    public static boolean insert_prod(String ProdName, String catg,String bustype,int cost,String owner,String start_date,String end_date) {
+    public static boolean insert_prod(String ProdName, String catg,int cost,String owner,String Description) {
 
-        String sql = "INSERT INTO Product(ProdName,Category,Bussiness_type,Cost,S_date,E_date,Owner) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Product(ProdName,Category,Cost,Owner,Description) VALUES(?,?,?,?,?)";
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
             pstmt.setString(1, ProdName);
             pstmt.setString(2, catg);
-            pstmt.setString(3, bustype);
-            pstmt.setInt(4, cost);
-            pstmt.setString(5, start_date);
-            pstmt.setString(6, end_date);
-            pstmt.setString(7, owner);
+            pstmt.setInt(3, cost);
+            pstmt.setString(4, owner);
+            pstmt.setString(5, Description);
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -136,26 +135,22 @@ public class Model {
 
 
     //update product
-    public static boolean updateProduct(int id ,String ProdName, String catg,String bustype,int cost,String owner,String start_date,String end_date) {
+    public static boolean updateProduct(int id ,String ProdName, String catg,int cost,String Description) {
         String sql = "UPDATE Product SET ProdName = ? , "
                 + "Category = ?,"
-                + "Bussiness_type = ?,"
                 + "cost = ?,"
-                + "S_date = ?,"
-                + "E_date = ?"
+                + "Description=?"
                 + "WHERE ID = ?";
 
-        try (
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             pstmt.setString(1, ProdName);
             pstmt.setString(2, catg);
-            pstmt.setString(3, bustype);
-            pstmt.setInt(4, cost);
-            pstmt.setString(5, start_date);
-            pstmt.setString(6, end_date);
-            pstmt.setInt(7, id);
+            pstmt.setInt(3, cost);
+            pstmt.setString(4, Description);
+            pstmt.setInt(5,id);
+
             // update
 
             if(pstmt.executeUpdate()!=0)
@@ -168,21 +163,54 @@ public class Model {
     }
 
     public static ArrayList<String[]> getAllProducts(){
-      return productsearch(null,null,null,null,username,null,null);
+        return productsearch(null,null,null,null,username,null);
 
     }
 
+
     //find all product
-    public static ArrayList<String[]> productsearch(String ProdName, String catg, String bustype, String cost, String owner, String start_date, String end_date){
+    public static ArrayList<String[]> productsearch(String ID,String ProdName, String catg, String cost, String owner, String Description){
         int field =1;
         ArrayList<String[]> ans = new ArrayList<>();
-        String sql ="";
-        //select by all params
-        if(ProdName!=null && catg!=null && bustype!=null && cost != null && owner !=null && start_date !=null && end_date !=null )
-            sql = "SELECT ID, Product.ProdName, Category,Bussiness_type,Cost,S_date,E_date,Owner FROM Product WHERE ProdName = ? and Category = ? and bussiness_type = ? and Cost = ?  and S_date = ? and E_date = ?  and Owner = ?  ";  //" +
-            //by Owner
-        else if(owner !=null)
-            sql = "SELECT ID, Product.ProdName, Category,Bussiness_type,Cost,S_date,E_date,Owner FROM Product WHERE Owner = ?  ";
+        String sql = "SELECT ID,ProdName,Category,Cost,Owner,PackageID,Description From Product WHERE ";
+        Boolean add = false;
+        if(ID!=null && !ID.equals("")){
+            sql = sql + "ID = ?";
+            add = true;
+        }
+        if(ProdName!=null && !ProdName.equals("")){
+            if(add)
+                sql = sql + " and ProdName = ?";
+            else
+                sql = sql +"ProdName = ?";
+            add = true;
+        }
+        if(catg!=null && !catg.equals("")){
+            if(add)
+                sql = sql + " and Category = ?";
+            else
+                sql = sql + " Category = ?";
+            add = true;
+        }
+        if(cost!=null && !cost.equals("")){
+            if(add)
+                sql = sql + " and cost = ?";
+            else
+                sql = sql + " cost = ?";
+            add = true;
+        }
+        if(owner!=null && !owner.equals("")){
+            if(add)
+                sql = sql + " and Owner = ?";
+            else
+                sql = sql + " Owner = ?";
+        }
+        if(Description!=null && !Description.equals("")){
+            if(add)
+                sql = sql + " and Description = ?";
+            else
+                sql = sql + " Description = ?";
+        }
 
         if(sql.equals(""))
             return null;
@@ -190,33 +218,32 @@ public class Model {
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
 
+            if (ID!=null && !ID.equals("")){
+                pstmt.setInt(1,Integer.parseInt(ID));
+                field++;
+            }
             // set the value
-            if(ProdName!=null) {
+            if(ProdName!=null && !ProdName.equals("")) {
                 pstmt.setString(field, ProdName);
                 field++;
             }
-            if(catg!=null) {
+            if(catg!=null && !catg.equals("")) {
                 pstmt.setString(field, catg);
                 field++;
             }
-            if(bustype!=null) {
-                pstmt.setString(field, bustype);
-                field++;
-            }
-            if(cost!=null) {
+
+            if(cost!=null && !cost.equals("")) {
                 pstmt.setInt(field, Integer.parseInt(cost));
                 field++;
             }
-            if(start_date!=null) {
-                pstmt.setString(field, start_date);
-                field++;
-            }
-            if(end_date!=null) {
-                pstmt.setString(field, end_date);
-                field++;
-            }
-            if(owner!=null) {
+
+            if(owner!=null && !owner.equals("")) {
                 pstmt.setString(field, owner);
+                field++;
+            }
+            if(Description!=null && !Description.equals("")) {
+                pstmt.setString(field, Description);
+
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -229,10 +256,11 @@ public class Model {
                 str.add(rs.getString( "ID"));
                 str.add(rs.getString( "ProdName"));
                 str.add(rs.getString("Category"));
-                str.add(rs.getString("Bussiness_type"));
                 str.add(rs.getString("Cost"));
-                str.add(rs.getString("S_date"));
-                str.add(rs.getString("E_date"));
+                str.add(rs.getString("owner"));
+                str.add(rs.getString("PackageID"));
+                str.add(rs.getString("Description"));
+
                 String[] strArr = new String[7];
                 ans.add(str.toArray(strArr));
                 count++;
@@ -266,27 +294,56 @@ public class Model {
         return false;
     }
 
-    public static String[] getProduct(int id){
-        String sql = "SELECT ID, Product.ProdName, Category,Bussiness_type,Cost,S_date,E_date,Owner FROM Product WHERE ID = ?";
-        try(PreparedStatement pstmt = conn.prepareStatement(sql)){
-            pstmt.setInt(1, id);
-            ResultSet rs = pstmt.executeQuery();
+    //----------------- PACKAGE-------------------
 
-            if (rs.next()){
-                ArrayList<String> str = new ArrayList<>();
-                str.add(rs.getString( "ID"));
-                str.add(rs.getString( "ProdName"));
-                str.add(rs.getString("Category"));
-                str.add(rs.getString("Bussiness_type"));
-                str.add(rs.getString("Cost"));
-                str.add(rs.getString("S_date"));
-                str.add(rs.getString("E_date"));
-                String[] strArr = new String[7];
-                str.toArray(strArr);
-                return strArr;
-            }
-        } catch (SQLException e){e.printStackTrace();}
-        return null;
+    public static boolean insert_pack(String PackName, String Business_Type,String StartDate,String EndDate,int TotalCost,String owner,String PackageName,String Description,String Status) {
+
+        String sql = "INSERT INTO Product(Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description,Status) VALUES(?,?,?,?,?,?,?,?)";
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            pstmt.setString(1, Business_Type);
+            pstmt.setString(2, StartDate);
+            pstmt.setString(3, EndDate);
+            pstmt.setInt(4, TotalCost);
+            pstmt.setString(5, owner);
+            pstmt.setString(6, PackageName);
+            pstmt.setString(7, Description);
+            pstmt.setString(8, Status);
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+
+
+
+
+
+
+
+    public static String[] getProduct(int id){
+            String sql = "SELECT ID,ProdName, Category,Cost,Owner,Description FROM Product WHERE ID = ?";
+            try(PreparedStatement pstmt = conn.prepareStatement(sql)){
+                pstmt.setInt(1, id);
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()){
+                    ArrayList<String> str = new ArrayList<>();
+                    str.add(rs.getString( "ID"));
+                    str.add(rs.getString( "ProdName"));
+                    str.add(rs.getString("Category"));
+                    str.add(rs.getString("Cost"));
+                    str.add(rs.getString("Owner"));
+                    str.add(rs.getString("Description"));
+                    String[] strArr = new String[7];
+                    str.toArray(strArr);
+                    return strArr;
+                }
+            } catch (SQLException e){e.printStackTrace();}
+            return null;
     }
 
     public static void sendConfirmationMail(String toMail, String subject, String msg){

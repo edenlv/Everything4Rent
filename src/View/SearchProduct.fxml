@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.Button?>
-<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SearchProduct">
+<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.SearchProduct">
     <top>
         <VBox alignment="BOTTOM_CENTER" prefHeight="64.0" prefWidth="600.0" BorderPane.alignment="BOTTOM_CENTER">
             <Label text="Search Product" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
@@ -24,6 +23,19 @@
     <center>
         <VBox alignment="TOP_CENTER" prefHeight="395.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
+
+                <HBox alignment="CENTER" prefHeight="37.0" prefWidth="360.0">
+                    <children>
+                        <Label prefHeight="40.0" prefWidth="200.0" text="Product ID:">
+                            <font>
+                                <Font size="18.0" />
+                            </font></Label>
+                        <TextField fx:id="in_id2" prefHeight="37.0" prefWidth="241.0" />
+                    </children>
+                    <VBox.margin>
+                        <Insets bottom="20.0" />
+                    </VBox.margin>
+                </HBox>
                 <HBox alignment="CENTER" prefHeight="37.0" prefWidth="360.0">
                     <children>
                         <Label prefHeight="40.0" prefWidth="200.0" text="Product Name:">
@@ -50,23 +62,6 @@
                         <Insets top="20.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="30.0" layoutY="30.0" prefHeight="37.0" prefWidth="360.0">
-                    <children>
-                        <Label prefHeight="40.0" prefWidth="200.0" text="Business Type:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <ChoiceBox fx:id="cb_businessType2" prefHeight="40.0" prefWidth="241.0">
-                            <items>
-
-                            </items>
-                        </ChoiceBox>
-                    </children>
-                    <VBox.margin>
-                        <Insets top="20.0" />
-                    </VBox.margin>
-                </HBox>
 
                 <HBox alignment="CENTER" prefHeight="37.0" prefWidth="360.0">
                     <children>
@@ -80,32 +75,35 @@
                         <Insets top="20.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="30.0" layoutY="201.0" prefHeight="37.0" prefWidth="360.0">
+
+                <HBox alignment="CENTER" prefHeight="37.0" prefWidth="360.0">
+                <children>
+                    <Label prefHeight="40.0" prefWidth="200.0" text="Description:">
+                        <font>
+                            <Font size="18.0" />
+                        </font></Label>
+                    <TextField fx:id="in_desc2" prefHeight="37.0" prefWidth="241.0" />
+                </children>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </HBox>
+
+                <HBox alignment="CENTER" prefHeight="37.0" prefWidth="360.0">
                     <children>
-                        <Label prefHeight="40.0" prefWidth="200.0" text="Start Date:">
+                        <Label prefHeight="40.0" prefWidth="200.0" text="Owner:">
                             <font>
                                 <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <DatePicker fx:id="date_start2" prefHeight="37.0" prefWidth="241.0" />
+                            </font></Label>
+                        <TextField fx:id="in_owner2" prefHeight="37.0" prefWidth="241.0" />
                     </children>
                     <VBox.margin>
                         <Insets top="20.0" />
                     </VBox.margin>
                 </HBox>
-                <HBox alignment="CENTER" layoutX="30.0" layoutY="258.0" prefHeight="37.0" prefWidth="360.0">
-                    <children>
-                        <Label prefHeight="40.0" prefWidth="200.0" text="End Date:">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                        </Label>
-                        <DatePicker fx:id="date_end2" prefHeight="37.0" prefWidth="241.0" />
-                    </children>
-                    <VBox.margin>
-                        <Insets top="20.0" />
-                    </VBox.margin>
-                </HBox>
+
+
+
 
 
 
@@ -120,7 +118,7 @@
 
         <HBox alignment="TOP_CENTER" prefHeight="81.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <Button alignment="CENTER" mnemonicParsing="false"  prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: green;" text="Search" textFill="WHITE">
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#onSearchProduct" prefHeight="37.0" prefWidth="200.0" style="-fx-background-color: green;" text="Search" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>

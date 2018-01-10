@@ -20,17 +20,15 @@ import static Controller.AddProduct.LocalDateToString;
 public class UpdateProduct implements Initializable{
     public String currentProduct;
     public Label lbl_prodNumber;
-    public ChoiceBox cb_category;
-    public ChoiceBox cb_businessType;
-    public TextField in_productName;
-    public TextField in_cost;
-    public DatePicker date_start;
-    public DatePicker date_end;
+    public ChoiceBox cb_category1;
+    public TextField in_productName1;
+    public TextField in_cost1;
+    public TextField in_owner1;
+    public TextField in_desc1;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        cb_category.setItems(FXCollections.observableArrayList("Cars", "Real Estate", "Animals", "Yad2"));
-        cb_businessType.setItems(FXCollections.observableArrayList("Rent", "Trade-In", "Donation"));
+        cb_category1.setItems(FXCollections.observableArrayList("Cars", "Real Estate", "Animals", "Yad2"));
     }
 
 
@@ -42,15 +40,12 @@ public class UpdateProduct implements Initializable{
 
             if (data!=null) {
                 lbl_prodNumber.setText("Product Number: " + String.valueOf(id));
-                in_productName.setText(data[1]);
-                cb_category.setValue(data[2]);
-                cb_businessType.setValue(data[3]);
-                in_cost.setText(data[4]);
+                in_productName1.setText(data[1]);
+                cb_category1.setValue(data[2]);
+                in_cost1.setText(data[3]);
+                in_desc1.setText(data[5]);
+                in_owner1.setText(data[4]);
 
-                LocalDate start_date = LocalDate.parse(data[5], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                date_start.setValue(start_date);
-                LocalDate end_date = LocalDate.parse(data[6], DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                date_end.setValue(end_date);
                 return true;
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -83,14 +78,12 @@ public class UpdateProduct implements Initializable{
 
     public void onUpdateProduct(ActionEvent actionEvent){
         int id = getNumber(currentProduct);
-        String productName = in_productName.getText();
-        String category = (String)cb_category.getValue();
-        String businessType = (String)cb_businessType.getValue();
-        String cost = in_cost.getText();
-        String endDate = LocalDateToString(date_end.getValue());
-        String startDate = LocalDateToString(date_start.getValue());
+        String productName = in_productName1.getText();
+        String category = (String)cb_category1.getValue();
+        String cost = in_cost1.getText();
+        String desc = in_desc1.getText();
 
-        boolean ok = Model.updateProduct( id ,productName, category,businessType,Integer.valueOf(cost),null, startDate,endDate);
+        boolean ok = Model.updateProduct(id ,productName, category, Integer.valueOf(cost), desc);
         if (ok){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Product Number " + id + " was updated successfully!");
@@ -100,7 +93,6 @@ public class UpdateProduct implements Initializable{
             Main.mainController.updateProductStage.close();
         }
     }
-
 
     public int getNumber(String strNum){
         if (strNum==null) return -1;
@@ -114,8 +106,5 @@ public class UpdateProduct implements Initializable{
         }
         return -1;
     }
-
-
-
 
 }

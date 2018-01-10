@@ -20,28 +20,25 @@ import java.util.*;
 
 public class AddProduct implements Initializable {
     public ChoiceBox cb_category;
-    public ChoiceBox cb_businessType;
     public TextField in_productName;
     public TextField in_cost;
-    public DatePicker date_start;
-    public DatePicker date_end;
+    public TextField in_desc;
+
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         cb_category.setItems(FXCollections.observableArrayList("Cars", "Real Estate", "Animals", "Yad2"));
-        cb_businessType.setItems(FXCollections.observableArrayList("Rent", "Trade-In", "Donation"));
     }
 
     public void onCreateProduct(ActionEvent event){
         String productName = in_productName.getText();
         String category = (String)cb_category.getValue();
-        String businessType = (String)cb_businessType.getValue();
-        String cost = in_cost.getText();
-        String endDate = LocalDateToString(date_end.getValue());
-        String startDate = LocalDateToString(date_start.getValue());
+        int cost = Integer.parseInt(in_cost.getText());
+        String desc = in_desc.getText();
+        String owner = Model.username;
 
-        boolean success = Model.insert_prod(productName, category, businessType, Integer.parseInt(cost), Model.username, startDate, endDate);
+        boolean success = Model.insert_prod(productName, category, cost, owner, desc);
         if (success) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setContentText("Product was created successfully!");
