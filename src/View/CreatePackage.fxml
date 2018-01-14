@@ -5,14 +5,14 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.MenuButton?>
-<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AddProduct">
+<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CreatePackage">
     <top>
         <VBox alignment="BOTTOM_CENTER" prefHeight="70.0" prefWidth="400.0" BorderPane.alignment="CENTER">
             <Label prefHeight="41.0" prefWidth="184.0" text="Create Package" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
@@ -136,7 +136,7 @@
 
         <HBox alignment="TOP_CENTER" prefHeight="81.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
-                <Button alignment="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="160.0" text="Create">
+                <Button alignment="CENTER" mnemonicParsing="false" onAction="#onCreatePackage" prefHeight="37.0" prefWidth="160.0" text="Create">
                     <font>
                         <Font name="System Bold" size="18.0" />
                     </font>

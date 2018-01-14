@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TableDialog_Pack">
+    <children>
+    <TableView fx:id="itemsTable" layoutX="-1.0" prefHeight="585.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+        <columns>
+            <TableColumn fx:id="idColumn" prefWidth="51.0" text="ID" />
+            <TableColumn fx:id="productNameColumn" prefWidth="243.0" text="Package Name" />
+            <TableColumn fx:id="bTypeCol" prefWidth="177.0" text="Business Type" />
+            <TableColumn fx:id="descColumn" prefWidth="235.0" text="Description" />
+            <TableColumn fx:id="startDateCol" minWidth="0.0" prefWidth="168.0" text="Start Date" />
+            <TableColumn fx:id="endDateCol" prefWidth="172.0" text="End Date" />
+            <TableColumn fx:id="costCol" prefWidth="142.0" text="Total Cost" />
+        </columns>
+    </TableView>
+    </children>
+
+</Pane>

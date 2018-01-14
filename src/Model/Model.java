@@ -390,6 +390,160 @@ public class Model {
     }
 
 
+    public static boolean insert_pack(String Business_Type,String StartDate,String EndDate,int TotalCost,String owner,String PackageName,String Description,ArrayList<String> prodID) {
+
+        String sql = "INSERT INTO Package(Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description) VALUES(?,?,?,?,?,?,?)";
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            pstmt.setString(1, Business_Type);
+            pstmt.setString(2, StartDate);
+            pstmt.setString(3, EndDate);
+            pstmt.setInt(4, TotalCost);
+            pstmt.setString(5, owner);
+            pstmt.setString(6, PackageName);
+            pstmt.setString(7, Description);
+
+            pstmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public static ArrayList<String[]> packsearch(String PackID,String PackName,String BusinessType, String StartDate,String Owner, String EndDate,String Description){
+        int field =1;
+        ArrayList<String[]> ans = new ArrayList<>();
+        String sql = "SELECT PackID,Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description From Package WHERE ";
+        Boolean add = false;
+        if(PackID!=null && !PackID.equals("") ){
+            sql = sql + "PackID = ?";
+            add = true;
+        }
+        if(BusinessType!=null && !BusinessType.equals("")){
+            if(add)
+                sql = sql + " and Business_Type = ?";
+            else
+                sql = sql +" Business_Type = ?";
+            add = true;
+        }
+        if(StartDate!=null && !StartDate.equals("")){
+            if(add)
+                sql = sql + " and StartDate = ?";
+            else
+                sql = sql + " StartDate = ?";
+            add = true;
+        }
+        if(EndDate!=null && !EndDate.equals("")){
+            if(add)
+                sql = sql + " and EndDate = ?";
+            else
+                sql = sql + " EndDate = ?";
+            add = true;
+        }
+        if(Owner!=null && !Owner.equals("")){
+            if(add)
+                sql = sql + " and Owner = ?";
+            else
+                sql = sql + "Owner = ?";
+            add = true;
+        }
+        if(PackName!=null && !PackName.equals("")){
+            if(add)
+                sql = sql + " and PackName = ?";
+            else
+                sql = sql + "PackName = ?";
+        }
+        if(Description!=null && !Description.equals("")){
+            if(add)
+                sql = sql + " and Description = ?";
+            else
+                sql = sql + "Description = ?";
+        }
+
+        if(sql.equals(""))
+            return null;
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+
+            // set the value
+            if(PackID!= null && !PackID.equals("")){
+                pstmt.setInt(field, Integer.parseInt(PackID));
+                field++;
+
+            }
+            if(BusinessType!=null && !BusinessType.equals("")) {
+                pstmt.setString(field, BusinessType);
+                field++;
+            }
+            if(StartDate!=null && !StartDate.equals("")) {
+                pstmt.setString(field, StartDate);
+                field++;
+            }
+
+            if(EndDate!=null && !EndDate.equals("")) {
+                pstmt.setInt(field, Integer.parseInt(EndDate));
+                field++;
+            }
+            if(Owner!=null && !Owner.equals("")) {
+                pstmt.setString(field, Owner);
+                field++;
+            }
+            if(PackName!=null && !PackName.equals(""))
+                if(Description!=null && Description.equals("")) {
+                    pstmt.setString(field, Description);
+
+                }
+
+            ResultSet rs = pstmt.executeQuery();
+
+            int count = 0;
+            // loop through the result set
+
+            while (rs.next()) {
+                ArrayList<String> str = new ArrayList<>();
+                str.add(rs.getString("PackID"));
+                str.add(rs.getString("Business_Type"));
+                str.add(rs.getString("StartDate"));
+                str.add(rs.getString("EndDate"));
+                str.add(rs.getString("TotalCost"));
+                str.add(rs.getString("Owner"));
+                str.add(rs.getString("PackageName"));
+                str.add(rs.getString("Description"));
+
+                String[] strArr = new String[8];
+                ans.add(str.toArray(strArr));
+                count++;
+            }
+            //didnt find records
+            if(count==0){
+                System.out.println("no record");
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return ans;
+    }
+
+    public static ArrayList<String[]> getallpack(){
+
+        return  packsearch("","","","",username,"","");
+    }
+
+
+    public static ArrayList<String[]> product_choose(){
+        ArrayList<String[]> prod = getAllProducts();
+        ArrayList<String[]> ans = new ArrayList<>();
+        for(int i = 0 ; i< prod.size();i++){
+            String[] temp = new String[2];
+            temp[0] = prod.get(i)[0];
+            temp[1] = prod.get(i)[1];
+            ans.add(temp);
+        }
+        return ans;
+    }
 
 
 }

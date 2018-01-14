@@ -17,6 +17,7 @@ public class Main extends Application {
     public static UpdateProduct updateProductController = null;
     public static SearchProduct searchProductController = null;
     public static CreatePackage createPackController = null;
+    public static TableDialog_Pack viewAllPacksController = null;
 
     public static boolean debugMode = true;
 

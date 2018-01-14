@@ -36,6 +36,7 @@ public class Home implements Initializable{
     public Stage updateProductStage;
     public Stage searchProductStage;
     public Stage createPackStage;
+    public Stage viewAllPacksStage;
 
     public MenuButton menuButton;
 
@@ -215,7 +216,7 @@ public class Home implements Initializable{
         createPackStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
         FXMLLoader fxmlLoader = new FXMLLoader();
         int width=600, height=550;
-        URL url = getClass().getResource("/View/AddProduct.fxml");;
+        URL url = getClass().getResource("/View/CreatePackage.fxml");;
         createPackStage.setTitle("Register");
 
         try {
@@ -225,7 +226,42 @@ public class Home implements Initializable{
             createPackStage.show();
             Main.createPackController = fxmlLoader.getController();
         }
+
         catch(Exception e) {e.printStackTrace();}
+    }
+
+    public void openViewAllPackages(ActionEvent event){
+
+        viewAllPacksStage = new Stage();
+        viewAllPacksStage.initModality(Modality.APPLICATION_MODAL);
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        int width=1200, height=600;
+        URL url = getClass().getResource("/View/TableDialog_Pack.fxml");
+        viewAllPacksStage.setTitle("Your Packages");
+
+        ArrayList<String[]> data = Model.getallpack();
+
+        viewAllPacksStage.setOnCloseRequest(
+                event1 -> {
+                    Main.mainController.viewAllPacksStage = null;
+                    Main.viewAllPacksController = null;
+                }
+        );
+
+        try {
+            Parent root = fxmlLoader.load(url.openStream());
+            Scene scene = new Scene(root, width, height);
+            viewAllPacksStage.setScene(scene);
+            viewAllPacksStage.show();
+            Main.viewAllPacksController = fxmlLoader.getController();
+            Main.viewAllPacksController.setModel(data);
+            viewAllPacksStage.setResizable(false);
+            scene.getStylesheets().add(new File("src\\View\\style.css").toURI().toURL().toExternalForm());
+        }
+
+        catch(Exception e) {e.printStackTrace();}
+
+
     }
 
 }
