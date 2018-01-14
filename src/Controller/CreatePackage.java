@@ -1,5 +1,6 @@
 package Controller;
 
+import View.Main;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -17,7 +18,6 @@ public class CreatePackage implements Initializable{
 
     private ArrayList<CheckBox> prods;
 
-    public ChoiceBox cb_packCategory;
     public ChoiceBox cb_packBType;
     public DatePicker date_start;
     public DatePicker date_end;
@@ -26,7 +26,6 @@ public class CreatePackage implements Initializable{
     public MenuButton menu_prods;
 
     public void initialize(URL location, ResourceBundle resources) {
-        cb_packCategory.setItems(FXCollections.observableArrayList("Cars", "Real Estate", "Animals", "Yad2"));
         cb_packBType.setItems(FXCollections.observableArrayList("Trade-In", "Loan", "Donation"));
 
         ArrayList<String[]> list = Model.product_choose();
@@ -49,8 +48,7 @@ public class CreatePackage implements Initializable{
 
     public void onCreatePackage(ActionEvent event){
         String packName = in_packName.getText();
-        String category = (String) cb_packCategory.getValue();
-        String businessType = (String) cb_packCategory.getValue();
+        String businessType = (String) cb_packBType.getValue();
         String startDate = date_start.getValue().toString();
         String endDate = date_end.getValue().toString();
         String description = in_desc.getText();
@@ -63,9 +61,20 @@ public class CreatePackage implements Initializable{
                 }
         );
 
+        boolean isOK = Model.insert_pack(businessType, startDate, endDate,packName,description, prodIDs);
+        if (isOK) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("Package was created successfully!");
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Error while creating new package to Database.");
+            alert.show();
+        }
 
+        Main.mainController.createPackStage.close();
 
-        System.out.println("success");
+        System.out.println("Successfully created package");
 
     }
 

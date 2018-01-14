@@ -294,34 +294,25 @@ public class Model {
         return false;
     }
 
-    //----------------- PACKAGE-------------------
+    //delete item from table
+    public static boolean deletePackage(int id) {
+        String sql = "DELETE FROM Package WHERE PackID = ?";
 
-    public static boolean insert_pack(String PackName, String Business_Type,String StartDate,String EndDate,int TotalCost,String owner,String PackageName,String Description,String Status) {
-
-        String sql = "INSERT INTO Product(Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description,Status) VALUES(?,?,?,?,?,?,?,?)";
         try (
-                PreparedStatement pstmt  = conn.prepareStatement(sql)){
-            pstmt.setString(1, Business_Type);
-            pstmt.setString(2, StartDate);
-            pstmt.setString(3, EndDate);
-            pstmt.setInt(4, TotalCost);
-            pstmt.setString(5, owner);
-            pstmt.setString(6, PackageName);
-            pstmt.setString(7, Description);
-            pstmt.setString(8, Status);
-            pstmt.executeUpdate();
-            return true;
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setInt(1, id);
+            // execute the delete statement
+            if(pstmt.executeUpdate()!=0)
+                return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return false;
     }
 
-
-
-
-
-
+    //----------------- PACKAGE-------------------
 
 
     public static String[] getProduct(int id){
@@ -390,20 +381,23 @@ public class Model {
     }
 
 
-    public static boolean insert_pack(String Business_Type,String StartDate,String EndDate,int TotalCost,String owner,String PackageName,String Description,ArrayList<String> prodID) {
+    public static boolean insert_pack(String Business_Type,String StartDate,String EndDate,String PackageName,String Description,ArrayList<String> prodID) {
 
-        String sql = "INSERT INTO Package(Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Package(Business_Type,StartDate,EndDate,Owner,PackageName,Description) VALUES(?,?,?,?,?,?)";
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
             pstmt.setString(1, Business_Type);
             pstmt.setString(2, StartDate);
             pstmt.setString(3, EndDate);
-            pstmt.setInt(4, TotalCost);
-            pstmt.setString(5, owner);
-            pstmt.setString(6, PackageName);
-            pstmt.setString(7, Description);
+            pstmt.setString(4, username);
+            pstmt.setString(5, PackageName);
+            pstmt.setString(6, Description);
 
             pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            int id = rs.getInt(1);
+            update_ALLproduct_packID(prodID,id);
+            updateTotalcost(prodID,id);
             return true;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -543,6 +537,90 @@ public class Model {
             ans.add(temp);
         }
         return ans;
+    }
+
+
+    public static boolean updatePackage(int PackID ,String Business_Type,String StartDate,String EndDate,String PackageName,String Description) {
+        String sql = "UPDATE Package SET Business_Type = ? , "
+                + "StartDate = ?, "
+                + "EndDate = ?, "
+                + "PackageName=?, "
+                + "Description=? "
+                + "WHERE PackID = ?";
+
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            pstmt.setString(1, Business_Type);
+            pstmt.setString(2, StartDate);
+            pstmt.setString(3, EndDate);
+            pstmt.setString(4, PackageName);
+            pstmt.setString(5, Description);
+            pstmt.setInt(6,PackID);
+
+            // update
+
+            if(pstmt.executeUpdate()!=0)
+                return true;
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+
+    public static void update_ALLproduct_packID(ArrayList<String> prodid,int packID){
+
+        for(int i =0; i <prodid.size();i++){
+            upate_product_packID(Integer.parseInt(prodid.get(i)),packID);
+        }
+    }
+    public static void updateTotalcost(ArrayList<String> prodid,int id) {
+        int totalcost=0;
+
+        for (int i = 0; i < prodid.size(); i++) {
+            String sql = "SELECT Cost From Product WHERE ID = ?";
+            try (
+                    PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, Integer.parseInt(prodid.get(i)));
+                ResultSet rs = pstmt.executeQuery();
+                totalcost += rs.getInt(1);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        String sql = "UPDATE Package SET TotalCost = ?  "
+                + "WHERE PackID = ?";
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(2, id);
+            pstmt.setInt(1,totalcost);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+    }
+
+//update product package id
+
+    public static Boolean upate_product_packID(int prodID,int packID){
+        String sql = "UPDATE Product SET PackageID = ? WHERE ID = ? ";
+        try (
+                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1,packID);
+            pstmt.setInt(2,prodID);
+            if(pstmt.executeUpdate()!=0)
+                return true;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
     }
 
 

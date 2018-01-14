@@ -37,6 +37,8 @@ public class Home implements Initializable{
     public Stage searchProductStage;
     public Stage createPackStage;
     public Stage viewAllPacksStage;
+    public Stage searchPackageStage;
+    public Stage updatePackageStage;
 
     public MenuButton menuButton;
 
@@ -231,15 +233,16 @@ public class Home implements Initializable{
     }
 
     public void openViewAllPackages(ActionEvent event){
+        openViewAllPackagesWindow(Model.getallpack());
+    }
 
+    public void openViewAllPackagesWindow(ArrayList<String[]> data){
         viewAllPacksStage = new Stage();
         viewAllPacksStage.initModality(Modality.APPLICATION_MODAL);
         FXMLLoader fxmlLoader = new FXMLLoader();
         int width=1200, height=600;
         URL url = getClass().getResource("/View/TableDialog_Pack.fxml");
         viewAllPacksStage.setTitle("Your Packages");
-
-        ArrayList<String[]> data = Model.getallpack();
 
         viewAllPacksStage.setOnCloseRequest(
                 event1 -> {
@@ -260,8 +263,57 @@ public class Home implements Initializable{
         }
 
         catch(Exception e) {e.printStackTrace();}
+    }
 
+    public void openUpdatePackage(String productNumber){
+        updatePackageStage = new Stage();
+        updatePackageStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        int width=600, height=550;
+        URL url = getClass().getResource("/View/UpdatePackage.fxml");
+        updatePackageStage.setTitle("Update your Package");
 
+        try {
+            Parent root = fxmlLoader.load(url.openStream());
+            Scene scene = new Scene(root, width, height);
+            updatePackageStage.setScene(scene);
+
+            Main.updatePackageController = fxmlLoader.getController();
+            boolean ok = Main.updatePackageController.setProduct(productNumber);
+            if (ok) updatePackageStage.show();
+        }
+        catch(Exception e) {e.printStackTrace();}
+    }
+
+    public void openSearchPackage(ActionEvent event){
+        searchPackageStage = new Stage();
+        searchPackageStage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+        FXMLLoader fxmlLoader = new FXMLLoader();
+        int width=600, height=550;
+        URL url = getClass().getResource("/View/SearchPackage.fxml");
+        searchPackageStage.setTitle("Search for a package");
+
+        try {
+            Parent root = fxmlLoader.load(url.openStream());
+            Scene scene = new Scene(root, width, height);
+            searchPackageStage.setScene(scene);
+
+            Main.searchPackageController = fxmlLoader.getController();
+
+            searchPackageStage.show();
+        }
+
+        catch(Exception e) {e.printStackTrace();}
+    }
+
+    public void onPressUpdatePackage(ActionEvent actionEvent){
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setContentText("Package Number");
+        dialog.initOwner(updatePackageStage);
+        dialog.setHeaderText("Enter the package's number you would like to update");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) openUpdatePackage(result.get());
     }
 
 }
