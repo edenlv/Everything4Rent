@@ -117,7 +117,7 @@ public class Model {
     // insert to product
     public static boolean insert_prod(String ProdName, String catg,int cost,String owner,String Description) {
 
-        String sql = "INSERT INTO Product(ProdName,Category,Cost,Owner,Description) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Product(ProdName,Category,Cost,Owner,Description,PackageID,Status) VALUES(?,?,?,?,?,?,?)";
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
             pstmt.setString(1, ProdName);
@@ -125,6 +125,8 @@ public class Model {
             pstmt.setInt(3, cost);
             pstmt.setString(4, owner);
             pstmt.setString(5, Description);
+            pstmt.setString(6,"");
+            pstmt.setString(7,"0");
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -152,7 +154,6 @@ public class Model {
             pstmt.setInt(5,id);
 
             // update
-
             if(pstmt.executeUpdate()!=0)
                 return true;
 
@@ -163,16 +164,15 @@ public class Model {
     }
 
     public static ArrayList<String[]> getAllProducts(){
-        return productsearch(null,null,null,null,username,null);
-
+        return productsearch(null,null,null,null,username,null,null,null);
     }
 
 
     //find all product
-    public static ArrayList<String[]> productsearch(String ID,String ProdName, String catg, String cost, String owner, String Description){
+    public static ArrayList<String[]> productsearch(String ID,String ProdName, String catg, String cost, String owner, String Description, String status, String packID){
         int field =1;
         ArrayList<String[]> ans = new ArrayList<>();
-        String sql = "SELECT ID,ProdName,Category,Cost,Owner,PackageID,Description From Product WHERE ";
+        String sql = "SELECT ID,ProdName,Category,Cost,Owner,PackageID,Description,Status From Product WHERE ";
         Boolean add = false;
         if(ID!=null && !ID.equals("")){
             sql = sql + "ID = ?";
@@ -204,12 +204,28 @@ public class Model {
                 sql = sql + " and Owner = ?";
             else
                 sql = sql + " Owner = ?";
+            add = true;
         }
         if(Description!=null && !Description.equals("")){
             if(add)
                 sql = sql + " and Description = ?";
             else
                 sql = sql + " Description = ?";
+            add = true;
+        }
+        if(packID!=null && !packID.equals("")){
+            if(add)
+                sql = sql + " and PackageID = ?";
+            else
+                sql = sql + " PackageID = ?";
+            add = true;
+        }
+        if(status!=null && !status.equals("")){
+            if(add)
+                sql = sql + " and Status = ?";
+            else
+                sql = sql + " Status = ?";
+            add = true;
         }
 
         if(sql.equals(""))
@@ -243,7 +259,14 @@ public class Model {
             }
             if(Description!=null && !Description.equals("")) {
                 pstmt.setString(field, Description);
-
+                field++;
+            }
+            if(packID!=null && !packID.equals("")) {
+                pstmt.setString(field, packID);
+                field++;
+            }
+            if(status!=null && !status.equals("")) {
+                pstmt.setString(field, status);
             }
 
             ResultSet rs = pstmt.executeQuery();
@@ -260,8 +283,9 @@ public class Model {
                 str.add(rs.getString("owner"));
                 str.add(rs.getString("PackageID"));
                 str.add(rs.getString("Description"));
+                str.add(rs.getString("Status"));
 
-                String[] strArr = new String[7];
+                String[] strArr = new String[8];
                 ans.add(str.toArray(strArr));
                 count++;
             }
@@ -382,8 +406,7 @@ public class Model {
 
 
     public static boolean insert_pack(String Business_Type,String StartDate,String EndDate,String PackageName,String Description,ArrayList<String> prodID) {
-
-        String sql = "INSERT INTO Package(Business_Type,StartDate,EndDate,Owner,PackageName,Description) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Package(Business_Type,StartDate,EndDate,Owner,PackageName,Description,Status) VALUES(?,?,?,?,?,?,0)";
         try (
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
             pstmt.setString(1, Business_Type);
@@ -528,7 +551,7 @@ public class Model {
 
 
     public static ArrayList<String[]> product_choose(){
-        ArrayList<String[]> prod = getAllProducts();
+        ArrayList<String[]> prod = productsearch(null,null,null,null,username,null,"0",null);
         ArrayList<String[]> ans = new ArrayList<>();
         for(int i = 0 ; i< prod.size();i++){
             String[] temp = new String[2];
@@ -610,11 +633,12 @@ public class Model {
 //update product package id
 
     public static Boolean upate_product_packID(int prodID,int packID){
-        String sql = "UPDATE Product SET PackageID = ? WHERE ID = ? ";
-        try (
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE Product SET PackageID = ?, Status = ? WHERE ID = ? ";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1,packID);
-            pstmt.setInt(2,prodID);
+            if (prodID==-1) pstmt.setInt(2,0);
+            else pstmt.setInt(2,1);
+            pstmt.setInt(3,prodID);
             if(pstmt.executeUpdate()!=0)
                 return true;
         }catch (SQLException e){

@@ -18,6 +18,7 @@ public class SearchProduct implements Initializable{
     public TextField in_desc2;
     public TextField in_id2;
     public TextField in_owner2;
+    public TextField in_packID;
 
 
     @Override
@@ -46,8 +47,9 @@ public class SearchProduct implements Initializable{
         String desc = in_desc2.getText();
         String id = in_id2.getText();
         String owner = in_owner2.getText();
+        String packID = in_packID.getText();
 
-        ArrayList<String[]> data = Model.productsearch(id,productName,category,cost,owner,desc);
+        ArrayList<String[]> data = Model.productsearch(id,productName,category,cost,owner,desc,"1",packID);
 
 
         Main.mainController.openProductsTable(data);

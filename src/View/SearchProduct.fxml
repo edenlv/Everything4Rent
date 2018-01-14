@@ -98,9 +98,19 @@
                         <TextField fx:id="in_owner2" prefHeight="37.0" prefWidth="241.0" />
                     </children>
                     <VBox.margin>
-                        <Insets top="20.0" />
+                        <Insets bottom="20.0" top="20.0" />
                     </VBox.margin>
                 </HBox>
+            <HBox alignment="CENTER" layoutX="50.0" layoutY="295.0" prefHeight="37.0" prefWidth="360.0">
+               <children>
+                  <Label prefHeight="40.0" prefWidth="200.0" text="Package ID:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="in_packID" prefHeight="37.0" prefWidth="241.0" />
+               </children>
+            </HBox>
 
 
 
