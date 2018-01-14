@@ -1,15 +1,14 @@
 package Model;
 
-        import javafx.scene.control.Alert;
-        import sun.security.krb5.internal.crypto.Des;
-
-        import javax.mail.*;
-        import javax.mail.internet.InternetAddress;
-        import javax.mail.internet.MimeMessage;
-        import java.sql.*;
-        import java.util.ArrayList;
-        import java.util.Locale;
-        import java.util.Properties;
+import javafx.scene.control.Alert;
+import sun.security.krb5.internal.crypto.Des;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Properties;
 
 public class Model {
     public static String path = System.getProperty("user.dir");
@@ -428,10 +427,10 @@ public class Model {
         return false;
     }
 
-    public static ArrayList<String[]> packsearch(String PackID,String PackName,String BusinessType, String StartDate,String Owner, String EndDate,String Description){
+    public static ArrayList<String[]> packsearch(String PackID,String PackName,String BusinessType, String StartDate,String Owner, String EndDate,String Description,String status){
         int field =1;
         ArrayList<String[]> ans = new ArrayList<>();
-        String sql = "SELECT PackID,Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description From Package WHERE ";
+        String sql = "SELECT PackID,Business_Type,StartDate,EndDate,TotalCost,Owner,PackageName,Description,Status From Package WHERE ";
         Boolean add = false;
         if(PackID!=null && !PackID.equals("") ){
             sql = sql + "PackID = ?";
@@ -470,12 +469,21 @@ public class Model {
                 sql = sql + " and PackName = ?";
             else
                 sql = sql + "PackName = ?";
+            add = true;
         }
         if(Description!=null && !Description.equals("")){
             if(add)
                 sql = sql + " and Description = ?";
             else
                 sql = sql + "Description = ?";
+            add = true;
+        }
+        if(status!=null && !status.equals("")){
+            if(add)
+                sql = sql + " and Status = ?";
+            else
+                sql = sql + "Status = ?";
+            add = true;
         }
 
         if(sql.equals(""))
@@ -507,11 +515,18 @@ public class Model {
                 pstmt.setString(field, Owner);
                 field++;
             }
-            if(PackName!=null && !PackName.equals(""))
-                if(Description!=null && Description.equals("")) {
-                    pstmt.setString(field, Description);
-
-                }
+            if(PackName!=null && !PackName.equals("")) {
+                pstmt.setString(field, PackName);
+                field++;
+            }
+            if(Description!=null && !Description.equals("")) {
+                pstmt.setString(field, Description);
+                field++;
+            }
+            if(status!=null && !status.equals("")) {
+                pstmt.setString(field, status);
+                field++;
+            }
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -546,7 +561,7 @@ public class Model {
 
     public static ArrayList<String[]> getallpack(){
 
-        return  packsearch("","","","",username,"","");
+        return  packsearch("","","","",username,"","", null);
     }
 
 
@@ -645,6 +660,82 @@ public class Model {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+
+    public static boolean insert_loan(String PackID1,String PackID2,String Owner,String Loaner) {
+        String sql;
+        if(PackID2!=null)
+            sql = "INSERT INTO Loans(PackID1,owner,Loaner,PackID2) VALUES(?,?,?,?)";
+        else
+            sql =  sql = "INSERT INTO Loans(PackID1,owner,Loaner) VALUES(?,?,?)";
+
+        try (
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+            pstmt.setInt(1, Integer.parseInt(PackID1));
+            pstmt.setString(2, Owner);
+            pstmt.setString(3, Loaner);
+            if(PackID2!=null)
+                pstmt.setInt(4, Integer.parseInt(PackID2));
+            pstmt.executeUpdate();
+            update_packstatus(Integer.parseInt(PackID1));
+            if(PackID2!=null)
+                update_packstatus(Integer.parseInt(PackID2));
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+    public static void update_packstatus(int packID){
+        String sql = "UPDATE Package SET Status = 1 WHERE PackID = ? ";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, packID);
+            pstmt.executeUpdate();
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static String getOwnerbypackID(String PackID){
+        String sql = "SELECT Owner FROM Package WHERE PackID =?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, Integer.parseInt(PackID));
+            ResultSet rs =  pstmt.executeQuery();
+            return  rs.getString("Owner");
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static ArrayList<String[]> allmyloans(){
+        ArrayList<String[]> ans = new ArrayList<>();
+        String sql = "select * FROM Loans inner join Package on Loans.PackID1 = Package.PackID Where Loans.loaner = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1,username);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                ArrayList<String> str = new ArrayList<>();
+                str.add(rs.getString("PackID1"));
+                str.add(rs.getString("Business_Type"));
+                str.add(rs.getString("StartDate"));
+                str.add(rs.getString("EndDate"));
+                str.add(rs.getString("TotalCost"));
+                str.add(rs.getString("owner"));
+                str.add(rs.getString("PackageName"));
+                str.add(rs.getString("Description"));
+                String[] strArr = new String[10];
+                ans.add(str.toArray(strArr));
+            }
+            return ans;
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
 

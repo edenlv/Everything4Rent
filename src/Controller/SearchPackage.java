@@ -57,9 +57,10 @@ public class SearchPackage implements Initializable{
         String description = in_desc.getText();
         String id = in_packID.getText();
 
-        ArrayList<String[]> data = Model.packsearch(id,packName,businessType,startDate,null,endDate,description);
+        ArrayList<String[]> data = Model.packsearch(id,packName,businessType,startDate,null,endDate,description,"0");
 
         Main.mainController.openViewAllPackagesWindow(data);
+        Main.viewAllPacksController.setOwnerColVisible(true);
 
     }
 

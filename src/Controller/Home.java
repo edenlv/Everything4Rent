@@ -27,6 +27,10 @@ public class Home implements Initializable{
     public HBox hbox_pack1;
     public HBox hbox_pack2;
     public Button btn_viewall;
+    public HBox hbox_pack3;
+    public Button btn_login;
+    public Button btn_logout;
+    public Button btn_reg;
 
 
     public Stage loginStage;
@@ -114,12 +118,28 @@ public class Home implements Initializable{
     public void loginSuccessful(String username){
         home_helloUser.setText("Hello, " + username+"!");
         home_helloUser.setVisible(true);
-        hbox_loginReg.setVisible(false);
+        btn_login.setVisible(false);
+        btn_reg.setVisible(false);
+        btn_logout.setVisible(true);
         hbox_prod1.setVisible(true);
         hbox_prod2.setVisible(true);
         hbox_pack1.setVisible(true);
         hbox_pack2.setVisible(true);
+        hbox_pack3.setVisible(true);
+    }
 
+    public void logout(){
+        Model.username = null;
+        home_helloUser.setText("");
+        home_helloUser.setVisible(false);
+        btn_login.setVisible(true);
+        btn_reg.setVisible(true);
+        btn_logout.setVisible(false);
+        hbox_prod1.setVisible(false);
+        hbox_prod2.setVisible(false);
+        hbox_pack1.setVisible(false);
+        hbox_pack2.setVisible(false);
+        hbox_pack3.setVisible(false);
     }
 
     public void openViewAllProducts(ActionEvent event){
@@ -209,7 +229,6 @@ public class Home implements Initializable{
         }
         catch(Exception e) {e.printStackTrace();}
     }
-
 
     /******************* PACKAGES ***************************/
 
@@ -315,5 +334,21 @@ public class Home implements Initializable{
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) openUpdatePackage(result.get());
     }
+
+    public void onShowMyLoans(ActionEvent event){
+
+        ArrayList<String[]> data = Model.allmyloans();
+
+        if (data.size() == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("No loans found!");
+            alert.show();
+            return;
+        }
+
+        openViewAllPackagesWindow(data);
+    }
+
+
 
 }

@@ -25,7 +25,7 @@ public class UpdatePackage implements Initializable{
     public DatePicker date_end;
     public TextField in_packName;
     public TextField in_desc;
-    public MenuButton menu_prods;
+//    public MenuButton menu_prods;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -36,17 +36,17 @@ public class UpdatePackage implements Initializable{
         this.prods = new ArrayList<>();
         ArrayList<CustomMenuItem> items = new ArrayList<>();
 
-        for (int i=0; i<list.size(); i++){
-            String[] aux = list.get(i);
-            String toShow = aux[0] + " - " + aux[1];
-            CheckBox cb = new CheckBox(toShow);
-            CustomMenuItem item = new CustomMenuItem(cb);
-            items.add(item);
-            item.setHideOnClick(false);
-            prods.add(cb);
-        }
-
-        if (items.size()>0) menu_prods.getItems().setAll(items);
+//        for (int i=0; i<list.size(); i++){
+//            String[] aux = list.get(i);
+//            String toShow = aux[0] + " - " + aux[1];
+//            CheckBox cb = new CheckBox(toShow);
+//            CustomMenuItem item = new CustomMenuItem(cb);
+//            items.add(item);
+//            item.setHideOnClick(false);
+//            prods.add(cb);
+//        }
+//
+//        if (items.size()>0) menu_prods.getItems().setAll(items);
     }
 
 
@@ -54,7 +54,7 @@ public class UpdatePackage implements Initializable{
         currentPackage = productNumber;
         int id = getNumber(currentPackage);
         if (id!=-1){
-            ArrayList<String[]> data = Model.packsearch(currentPackage,null,null,null,null,null,null);
+            ArrayList<String[]> data = Model.packsearch(currentPackage,null,null,null,null,null,null,null);
 
             if (data!=null && data.size()>0) {
                 String[] prod = data.get(0);
