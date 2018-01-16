@@ -37,7 +37,19 @@ public class UpdateProduct implements Initializable{
         int id = getNumber(currentProduct);
         if (id!=-1){
             String[] data = Model.getProduct(id);
+            if (data==null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("No product found!");
+                alert.show();
+                return false;
+            }
 
+            if (data[4]!=null && !data[4].equals(Model.username)){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The product is not yours!");
+                alert.show();
+                return false;
+            }
             if (data!=null) {
                 lbl_prodNumber.setText("Product Number: " + String.valueOf(id));
                 in_productName1.setText(data[1]);

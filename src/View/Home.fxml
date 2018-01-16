@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="750.0" style="-fx-background-image: url('./View/back.jfif'); -fx-background-size: 750 750;" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
     <top>
         <VBox alignment="CENTER" prefHeight="122.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
@@ -109,19 +109,19 @@
                              <Insets left="20.0" />
                          </HBox.margin>
                      </Button>
-                 </children>
-             </HBox>
-             <HBox fx:id="hbox_pack1" alignment="CENTER" prefHeight="100.0" prefWidth="400.0" visible="false">
-                 <children>
-                     <Button mnemonicParsing="false" onAction="#onPressUpdatePackage" prefWidth="180.0" text="Update Package" textAlignment="CENTER">
+                     <Button fx:id="btn_updatePck" mnemonicParsing="false" onAction="#onPressUpdatePackage" prefWidth="180.0" text="Update Package" textAlignment="CENTER" visible="false">
                          <font>
                              <Font size="18.0" />
                          </font>
                      <HBox.margin>
-                        <Insets right="15.0" />
+                        <Insets left="20.0" right="15.0" />
                      </HBox.margin>
                      </Button>
-                     <Button layoutX="220.0" layoutY="32.0" mnemonicParsing="false" onAction="#openSearchPackage" prefWidth="180.0" text="Search Package" textAlignment="CENTER">
+                 </children>
+             </HBox>
+             <HBox fx:id="hbox_pack1" alignment="CENTER" prefHeight="100.0" prefWidth="400.0">
+                 <children>
+                     <Button layoutX="220.0" layoutY="32.0" mnemonicParsing="false" onAction="#openSearchPackage" prefWidth="180.0" style="-fx-border-radius: 3px; -fx-border-color: black; -fx-border-style: solid;" styleClass="myButton" text="Search Package" textAlignment="CENTER">
                          <font>
                              <Font size="18.0" />
                          </font>

@@ -34,6 +34,7 @@ public class Home implements Initializable{
     public Button btn_logout;
     public Button btn_reg;
     public ImageView imageview;
+    public Button btn_updatePck;
 
 
     public Stage loginStage;
@@ -70,7 +71,6 @@ public class Home implements Initializable{
         int width=350, height=150;
         URL url = getClass().getResource("/View/LoginDialog.fxml");
         loginStage.setTitle("Login to System");
-
 
         try {
             Parent root = fxmlLoader.load(url.openStream());
@@ -128,7 +128,8 @@ public class Home implements Initializable{
         btn_logout.setVisible(true);
         hbox_prod1.setVisible(true);
         hbox_prod2.setVisible(true);
-        hbox_pack1.setVisible(true);
+//        hbox_pack1.setVisible(true);
+        btn_updatePck.setVisible(true);
         hbox_pack2.setVisible(true);
         hbox_pack3.setVisible(true);
     }
@@ -142,7 +143,8 @@ public class Home implements Initializable{
         btn_logout.setVisible(false);
         hbox_prod1.setVisible(false);
         hbox_prod2.setVisible(false);
-        hbox_pack1.setVisible(false);
+//        hbox_pack1.setVisible(false);
+        btn_updatePck.setVisible(false);
         hbox_pack2.setVisible(false);
         hbox_pack3.setVisible(false);
     }
@@ -284,6 +286,8 @@ public class Home implements Initializable{
             Main.viewAllPacksController.setModel(data);
             viewAllPacksStage.setResizable(false);
             scene.getStylesheets().add(new File("src\\View\\style.css").toURI().toURL().toExternalForm());
+            Main.viewAllPacksController.setTradeVisible(false);
+            Main.viewAllPacksController.setLoanVisible(false);
         }
 
         catch(Exception e) {e.printStackTrace();}
@@ -305,11 +309,6 @@ public class Home implements Initializable{
             Main.updatePackageController = fxmlLoader.getController();
             boolean ok = Main.updatePackageController.setProduct(productNumber);
             if (ok) updatePackageStage.show();
-            else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Can't show you this package. It may not be yours.");
-                alert.show();
-            }
         }
         catch(Exception e) {e.printStackTrace();}
     }
@@ -330,7 +329,10 @@ public class Home implements Initializable{
             Main.searchPackageController = fxmlLoader.getController();
 
             searchPackageStage.show();
+
         }
+
+
 
         catch(Exception e) {e.printStackTrace();}
     }
@@ -357,7 +359,7 @@ public class Home implements Initializable{
         }
 
         openViewAllPackagesWindow(data);
-
+        Main.viewAllPacksController.setOwnerColVisible(true);
         Main.viewAllPacksController.setLoanVisible(false);
         Main.viewAllPacksController.setTradeVisible(false);
     }

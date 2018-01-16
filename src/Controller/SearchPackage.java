@@ -62,6 +62,11 @@ public class SearchPackage implements Initializable{
         Main.mainController.openViewAllPackagesWindow(data);
         Main.viewAllPacksController.setOwnerColVisible(true);
 
+        if (Model.username!=null) {
+            Main.viewAllPacksController.setLoanVisible(true);
+            Main.viewAllPacksController.setTradeVisible(true);
+        }
+
     }
 
 

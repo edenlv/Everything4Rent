@@ -29,25 +29,7 @@
           </TableView>
          </children>
       </VBox>
-      <HBox fx:id="hbox_loan" alignment="CENTER" layoutX="25.0" layoutY="450.0" prefHeight="100.0" prefWidth="941.0">
-         <children>
-            <Label prefHeight="50.0" prefWidth="191.0" text="Enter Package ID:">
-               <font>
-                  <Font name="System Bold" size="22.0" />
-               </font>
-            </Label>
-            <TextField fx:id="in_packID_loan" prefHeight="38.0" prefWidth="254.0" />
-            <Button mnemonicParsing="false" onAction="#loanPackage" text="Loan Package!">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="System Bold" size="18.0" />
-               </font>
-            </Button>
-         </children>
-      </HBox>
-      <HBox alignment="CENTER" layoutX="24.0" layoutY="510.0" prefHeight="100.0" prefWidth="941.0">
+      <HBox alignment="CENTER" layoutX="14.0" layoutY="450.0" prefHeight="100.0" prefWidth="1097.0">
          <children>
             <Label prefHeight="50.0" prefWidth="191.0" text="Enter Package ID:">
                <font>
@@ -63,17 +45,15 @@
                   <Font name="System Bold" size="18.0" />
                </font>
             </Button>
-         </children>
-      </HBox>
-      <HBox fx:id="hbox_trade" alignment="CENTER" layoutX="35.0" layoutY="390.0" prefHeight="100.0" prefWidth="941.0">
-         <children>
-            <Label prefHeight="50.0" prefWidth="191.0" text="Enter Package ID:">
+            <Button fx:id="btn_loan" mnemonicParsing="false" onAction="#loanPackage" text="Loan Package!" visible="false">
+               <HBox.margin>
+                  <Insets left="20.0" />
+               </HBox.margin>
                <font>
-                  <Font name="System Bold" size="22.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
-            </Label>
-            <TextField fx:id="in_packID_tradein" prefHeight="38.0" prefWidth="254.0" />
-            <Button mnemonicParsing="false" onAction="#tradeinPackage" text="Trade-In Package!">
+            </Button>
+            <Button fx:id="btn_trade" mnemonicParsing="false" onAction="#tradeinPackage" text="Trade-In Package!" visible="false">
                <HBox.margin>
                   <Insets left="20.0" />
                </HBox.margin>

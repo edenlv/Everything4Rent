@@ -20,8 +20,8 @@ public class TableDialog_Pack implements Initializable{
     public TableView<TableDialog_Pack.Item> itemsTable;
 
     public TextField in_packID;
-    public TextField in_packID_loan;
-    public TextField in_packID_tradein;
+    public Button btn_loan;
+    public Button btn_trade;
 
     public TableColumn idColumn;
     public TableColumn productNameColumn;
@@ -31,8 +31,6 @@ public class TableDialog_Pack implements Initializable{
     public TableColumn endDateCol;
     public TableColumn costCol;
     public TableColumn ownerCol;
-    public HBox hbox_loan;
-    public HBox hbox_trade;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -58,11 +56,26 @@ public class TableDialog_Pack implements Initializable{
 
     public void viewAllProducts(ActionEvent event){
         String packID = in_packID.getText();
+
+        if (packID.equals("")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You must enter input!");
+            alert.show();
+            return;
+        }
+
         Main.mainController.openProductsTable(Model.productsearch(null,null,null,null,null,null,"1",packID));
     }
 
     public void loanPackage(ActionEvent event){
-        String packIDtoLoan = in_packID_loan.getText();
+        String packIDtoLoan = in_packID.getText();
+
+        if (packIDtoLoan.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You must enter package ID");
+            alert.show();
+            return;
+        }
 
         String owner1 = Model.getOwnerbypackID(packIDtoLoan);
         String bType = Model.getBTypeByPackID(packIDtoLoan);
@@ -97,7 +110,14 @@ public class TableDialog_Pack implements Initializable{
     }
 
     public void tradeinPackage(ActionEvent event){
-        String pack1 = in_packID_tradein.getText();
+        String pack1 = in_packID.getText();
+
+        if (pack1.equals("")) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("You must enter package ID");
+            alert.show();
+            return;
+        }
 
         String owner1 = Model.getOwnerbypackID(pack1);
         String owner2 = Model.username;
@@ -130,8 +150,9 @@ public class TableDialog_Pack implements Initializable{
 
             //TODO: call model method to loan
             boolean isOK = Model.insert_loan(pack1,pack2,owner1,owner2);
+            boolean isOK2 = Model.insert_loan(pack2,pack1,owner2,owner1);
 
-            if (isOK) {
+            if (isOK && isOK2) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setContentText("You have successfully traded-in package number " + pack1 + ".");
                 alert.setHeaderText("Trade-In Successful!");
@@ -149,11 +170,11 @@ public class TableDialog_Pack implements Initializable{
     }
 
     public void setLoanVisible(boolean vis){
-        hbox_loan.setVisible(vis);
+        btn_loan.setVisible(vis);
     }
 
     public void setTradeVisible(boolean vis){
-        hbox_trade.setVisible(vis);
+        btn_trade.setVisible(vis);
     }
 
 

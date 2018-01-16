@@ -60,6 +60,9 @@ public class UpdatePackage implements Initializable{
                 String[] prod = data.get(0);
 
                 if (!prod[5].equals(Model.username)){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Can't show you this package. It may not be yours.");
+                    alert.show();
                     return false;
                 }
 

@@ -726,9 +726,10 @@ public class Model {
 
     public static ArrayList<String[]> allmyloans(){
         ArrayList<String[]> ans = new ArrayList<>();
-        String sql = "select * FROM Loans inner join Package on Loans.PackID1 = Package.PackID Where Loans.loaner = ?";
+        String sql = "select * FROM Loans inner join Package on Loans.PackID1 = Package.PackID Where Loans.loaner = ? ";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1,username);
+//            pstmt.setString(2,username);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
