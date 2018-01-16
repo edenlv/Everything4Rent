@@ -16,6 +16,13 @@ public class LoginDialog {
         String user = login_user.getText();
         String password = login_password.getText();
 
+        if (user.equals("") || password.equals("")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Enter username and password.");
+            alert.show();
+            return;
+        }
+
         String authUser = Model.login(user, password);
 
         if (authUser!=null){

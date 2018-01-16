@@ -57,6 +57,13 @@ public class SearchPackage implements Initializable{
         String description = in_desc.getText();
         String id = in_packID.getText();
 
+        if (!checkIntegrity()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("ID must be number");
+            alert.show();
+            return;
+        }
+
         ArrayList<String[]> data = Model.packsearch(id,packName,businessType,startDate,null,endDate,description,"0");
 
         Main.mainController.openViewAllPackagesWindow(data);
@@ -67,6 +74,15 @@ public class SearchPackage implements Initializable{
             Main.viewAllPacksController.setTradeVisible(true);
         }
 
+    }
+
+    public boolean checkIntegrity(){
+        String id = in_packID.getText();
+        if (id==null || id.equals("")){return true;}
+        try{
+            int x = Integer.parseInt(id);
+            return true;
+        } catch (Exception e){ return false; }
     }
 
 

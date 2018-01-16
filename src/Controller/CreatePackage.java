@@ -47,34 +47,47 @@ public class CreatePackage implements Initializable{
 
 
     public void onCreatePackage(ActionEvent event){
-        String packName = in_packName.getText();
-        String businessType = (String) cb_packBType.getValue();
-        String startDate = date_start.getValue().toString();
-        String endDate = date_end.getValue().toString();
-        String description = in_desc.getText();
+        try {
+            String packName = in_packName.getText();
+            String businessType = (String) cb_packBType.getValue();
+            String startDate = date_start.getValue().toString();
+            String endDate = date_end.getValue().toString();
+            String description = in_desc.getText();
 
-        ArrayList<String> prodIDs = new ArrayList<>();
+            ArrayList<String> prodIDs = new ArrayList<>();
 
-        prods.stream().forEach(
-                cb -> {
-                    if (cb.isSelected()) prodIDs.add(cb.getText().split(" - ")[0]);
-                }
-        );
+            prods.stream().forEach(
+                    cb -> {
+                        if (cb.isSelected()) prodIDs.add(cb.getText().split(" - ")[0]);
+                    }
+            );
 
-        boolean isOK = Model.insert_pack(businessType, startDate, endDate,packName,description, prodIDs);
-        if (isOK) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Package was created successfully!");
-            alert.show();
-        } else {
+            if (prodIDs.size() == 0 || packName.length() == 0 || businessType == null || businessType.length() == 0 || startDate.length() == 0 || endDate.length() == 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Bad input");
+                alert.show();
+                return;
+            }
+
+            boolean isOK = Model.insert_pack(businessType, startDate, endDate, packName, description, prodIDs);
+            if (isOK) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Package was created successfully!");
+                alert.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error while creating new package to Database.");
+                alert.show();
+            }
+
+            Main.mainController.createPackStage.close();
+
+            System.out.println("Successfully created package");
+        } catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Error while creating new package to Database.");
+            alert.setContentText("Bad input");
             alert.show();
         }
-
-        Main.mainController.createPackStage.close();
-
-        System.out.println("Successfully created package");
 
     }
 

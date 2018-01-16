@@ -49,10 +49,35 @@ public class SearchProduct implements Initializable{
         String owner = in_owner2.getText();
         String packID = in_packID.getText();
 
+        if (!checkIntegrity()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("ID and cost must be valid numbers!");
+            alert.show();
+            return;
+        }
+
         ArrayList<String[]> data = Model.productsearch(id,productName,category,cost,owner,desc,"1",packID);
 
 
         Main.mainController.openProductsTable(data);
 
+    }
+
+    public boolean checkIntegrity(){
+        String cost = in_cost2.getText();
+        String id = in_id2.getText();
+        String packID = in_packID.getText();
+
+        try {
+            int x = Integer.parseInt(id);
+            x = Integer.parseInt(packID);
+            double y = Double.parseDouble(cost);
+
+        } catch (Exception e ){ return false; }
+
+
+
+
+        return true;
     }
 }

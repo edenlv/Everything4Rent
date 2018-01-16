@@ -32,24 +32,37 @@ public class AddProduct implements Initializable {
     }
 
     public void onCreateProduct(ActionEvent event){
-        String productName = in_productName.getText();
-        String category = (String)cb_category.getValue();
-        int cost = Integer.parseInt(in_cost.getText());
-        String desc = in_desc.getText();
-        String owner = Model.username;
+        try {
+            String productName = in_productName.getText();
+            String category = (String) cb_category.getValue();
+            int cost = Integer.parseInt(in_cost.getText());
+            String desc = in_desc.getText();
+            String owner = Model.username;
 
-        boolean success = Model.insert_prod(productName, category, cost, owner, desc);
-        if (success) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setContentText("Product was created successfully!");
-            alert.show();
-        } else {
+            if (productName.length()==0 || category.length()==0){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Bad input");
+                alert.show();
+                return;
+            }
+
+            boolean success = Model.insert_prod(productName, category, cost, owner, desc);
+            if (success) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Product was created successfully!");
+                alert.show();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Error while creating new product to Database.");
+                alert.show();
+            }
+
+            Main.mainController.addProductStage.close();
+        } catch (Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setContentText("Error while creating new product to Database.");
+            alert.setContentText("Bad input");
             alert.show();
         }
-
-        Main.mainController.addProductStage.close();
     }
 
 
