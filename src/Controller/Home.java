@@ -300,6 +300,11 @@ public class Home implements Initializable{
             Main.updatePackageController = fxmlLoader.getController();
             boolean ok = Main.updatePackageController.setProduct(productNumber);
             if (ok) updatePackageStage.show();
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Can't show you this package. It may not be yours.");
+                alert.show();
+            }
         }
         catch(Exception e) {e.printStackTrace();}
     }
@@ -347,6 +352,9 @@ public class Home implements Initializable{
         }
 
         openViewAllPackagesWindow(data);
+
+        Main.viewAllPacksController.setLoanVisible(false);
+        Main.viewAllPacksController.setTradeVisible(false);
     }
 
 

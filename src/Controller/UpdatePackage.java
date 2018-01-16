@@ -59,6 +59,10 @@ public class UpdatePackage implements Initializable{
             if (data!=null && data.size()>0) {
                 String[] prod = data.get(0);
 
+                if (!prod[5].equals(Model.username)){
+                    return false;
+                }
+
                 lbl_prodNumber.setText("Package Number: " + String.valueOf(id));
                 cb_packBType.setValue(prod[1]);
                 String[] start = prod[2].split("-");
@@ -71,6 +75,7 @@ public class UpdatePackage implements Initializable{
                 in_desc.setText(prod[7]);
                 return true;
             } else {
+
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setContentText("Product number not found!");
                 alert.show();

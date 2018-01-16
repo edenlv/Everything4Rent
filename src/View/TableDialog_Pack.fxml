@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TableDialog_Pack">
+<Pane prefHeight="600.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.TableDialog_Pack">
     <children>
       <VBox alignment="CENTER" prefHeight="450.0" prefWidth="1200.0">
          <children>
@@ -29,7 +29,7 @@
           </TableView>
          </children>
       </VBox>
-      <HBox alignment="CENTER" layoutX="25.0" layoutY="450.0" prefHeight="100.0" prefWidth="941.0">
+      <HBox fx:id="hbox_loan" alignment="CENTER" layoutX="25.0" layoutY="450.0" prefHeight="100.0" prefWidth="941.0">
          <children>
             <Label prefHeight="50.0" prefWidth="191.0" text="Enter Package ID:">
                <font>
@@ -65,7 +65,7 @@
             </Button>
          </children>
       </HBox>
-      <HBox alignment="CENTER" layoutX="35.0" layoutY="390.0" prefHeight="100.0" prefWidth="941.0">
+      <HBox fx:id="hbox_trade" alignment="CENTER" layoutX="35.0" layoutY="390.0" prefHeight="100.0" prefWidth="941.0">
          <children>
             <Label prefHeight="50.0" prefWidth="191.0" text="Enter Package ID:">
                <font>

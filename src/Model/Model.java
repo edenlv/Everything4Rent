@@ -466,9 +466,9 @@ public class Model {
         }
         if(PackName!=null && !PackName.equals("")){
             if(add)
-                sql = sql + " and PackName = ?";
+                sql = sql + " and PackageName = ?";
             else
-                sql = sql + "PackName = ?";
+                sql = sql + "PackageName = ?";
             add = true;
         }
         if(Description!=null && !Description.equals("")){
@@ -508,7 +508,7 @@ public class Model {
             }
 
             if(EndDate!=null && !EndDate.equals("")) {
-                pstmt.setInt(field, Integer.parseInt(EndDate));
+                pstmt.setString(field, EndDate);
                 field++;
             }
             if(Owner!=null && !Owner.equals("")) {
@@ -704,6 +704,19 @@ public class Model {
             pstmt.setInt(1, Integer.parseInt(PackID));
             ResultSet rs =  pstmt.executeQuery();
             return  rs.getString("Owner");
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static String getBTypeByPackID(String PackID){
+        String sql = "SELECT Business_Type FROM Package WHERE PackID =?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, Integer.parseInt(PackID));
+            ResultSet rs =  pstmt.executeQuery();
+            return  rs.getString("Business_Type");
         }
         catch (SQLException e){
             System.out.println(e.getMessage());

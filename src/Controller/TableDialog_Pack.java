@@ -9,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import Model.*;
+import javafx.scene.layout.HBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,6 +31,8 @@ public class TableDialog_Pack implements Initializable{
     public TableColumn endDateCol;
     public TableColumn costCol;
     public TableColumn ownerCol;
+    public HBox hbox_loan;
+    public HBox hbox_trade;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,6 +65,14 @@ public class TableDialog_Pack implements Initializable{
         String packIDtoLoan = in_packID_loan.getText();
 
         String owner1 = Model.getOwnerbypackID(packIDtoLoan);
+        String bType = Model.getBTypeByPackID(packIDtoLoan);
+
+        if (!bType.equals("Loan") && !bType.equals("Donation")){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("The package you chose is not for loan!");
+            alert.show();
+            return;
+        }
 
         if (owner1.equals(Model.username)) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -107,6 +118,16 @@ public class TableDialog_Pack implements Initializable{
                 return;
             }
 
+            String bType1 = Model.getBTypeByPackID(pack1);
+            String bType2 = Model.getBTypeByPackID(pack2);
+
+            if (!bType1.equals("Trade-In") && !bType2.equals("Trade-In")){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("The package you chose is not for trade-in!");
+                alert.show();
+                return;
+            }
+
             //TODO: call model method to loan
             boolean isOK = Model.insert_loan(pack1,pack2,owner1,owner2);
 
@@ -127,7 +148,13 @@ public class TableDialog_Pack implements Initializable{
         ownerCol.setVisible(visible);
     }
 
+    public void setLoanVisible(boolean vis){
+        hbox_loan.setVisible(vis);
+    }
 
+    public void setTradeVisible(boolean vis){
+        hbox_trade.setVisible(vis);
+    }
 
 
 
@@ -144,16 +171,6 @@ public class TableDialog_Pack implements Initializable{
         private final SimpleStringProperty endDate;
         private final SimpleStringProperty cost;
         private final SimpleStringProperty owner;
-
-//        private Item(String id, String productName, String category, double cost, String desc, String packID, String owner) {
-//            this.id = new SimpleStringProperty(id);
-//            this.productName = new SimpleStringProperty(productName);
-//            this.category = new SimpleStringProperty(category);
-//            this.bType = new SimpleStringProperty(String.valueOf(cost));
-//            this.description = new SimpleStringProperty(desc);
-//            this.startDate = new SimpleStringProperty(packID);
-//            this.endDate = new SimpleStringProperty(owner);
-//        }
 
         private Item(String[] data) {
             this.id = new SimpleStringProperty(data[0]);

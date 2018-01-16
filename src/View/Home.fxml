@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Home">
     <top>
         <VBox alignment="CENTER" prefHeight="122.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
@@ -20,7 +20,7 @@
                 </Label>
             <VBox alignment="CENTER" prefHeight="129.0" prefWidth="600.0">
                <children>
-                  <Label fx:id="home_helloUser" contentDisplay="CENTER" prefHeight="45.0" prefWidth="179.0" text="" textAlignment="CENTER" visible="true">
+                  <Label fx:id="home_helloUser" alignment="CENTER" contentDisplay="CENTER" prefHeight="45.0" prefWidth="545.0" text="" textAlignment="CENTER" visible="true">
                      <font>
                         <Font name="System Bold" size="30.0" />
                      </font>
@@ -43,7 +43,7 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btn_viewall" mnemonicParsing="false" onAction="#openViewAllProducts" prefHeight="40.0" prefWidth="180.0" text="View All Products">
+                  <Button fx:id="btn_viewall" mnemonicParsing="false" onAction="#openViewAllProducts" prefHeight="40.0" prefWidth="180.0" text="View My Products">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -96,7 +96,7 @@
                         <Insets right="15.0" />
                      </HBox.margin>
                      </Button>
-                     <Button mnemonicParsing="false" onAction="#openViewAllPackages" prefHeight="40.0" prefWidth="180.0" text="View All Packages">
+                     <Button mnemonicParsing="false" onAction="#openViewAllPackages" prefHeight="40.0" prefWidth="180.0" text="View My Packages">
                          <font>
                              <Font size="18.0" />
                          </font>
