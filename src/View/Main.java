@@ -29,7 +29,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader();
         Parent root = fxmlLoader.load(getClass().getResource("Home.fxml").openStream());
         primaryStage.setTitle("Everything4Rent System");
-        primaryStage.setScene(new Scene(root, 600, 500));
+        primaryStage.setScene(new Scene(root, 750, 750));
         primaryStage.show();
 
         mainController = (Home) fxmlLoader.getController();

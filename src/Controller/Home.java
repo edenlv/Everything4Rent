@@ -9,6 +9,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -31,6 +33,7 @@ public class Home implements Initializable{
     public Button btn_login;
     public Button btn_logout;
     public Button btn_reg;
+    public ImageView imageview;
 
 
     public Stage loginStage;
@@ -56,6 +59,8 @@ public class Home implements Initializable{
 //        item0.setHideOnClick(false);
 //        item1.setHideOnClick(false);
 //        menuButton.getItems().setAll(item0,item1);
+
+        imageview.setImage(new Image("./View/logo.jpg"));
     }
 
     public void openLoginDialog(ActionEvent event){
